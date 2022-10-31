@@ -1,32 +1,56 @@
 package com.example;
 
 import java.io.Console;
+import java.io.EOFException;
+import java.rmi.ConnectIOException;
 import java.util.Scanner;
 import java.util.Stack;
 
 import javax.swing.DebugGraphics;
+import javax.swing.plaf.basic.BasicScrollPaneUI;
 
 public class App 
 {
-    public static Stack opStack = new Stack<String>();
+    public static Stack numStack = new Stack<Integer>();
 
     public static void main( String[] args )
     {
         Scanner input = new Scanner(System.in);
 
-        String expression = input.nextLine();
+        String pInput = "";
 
-        for(int i=0; i< expression.length(); i++){
-            if(expression.charAt(i) == ' ') continue; // ignore whitespace;      
+        String num = "";
 
-            if(expression.charAt(i) >= 47 && expression.charAt(i) <= 57){
-                numStack.push(expression.charAt(i) - '0');
+        Boolean escape = false;
+
+        while(!escape){
+            System.out.print("> ");
+            pInput = input.nextLine();
+
+            for(int i=0; i<pInput.length(); i++){
+                if(pInput.charAt(i) >= 48 && pInput.charAt(i) <= 57) 
+                {
+                    //System.out.print(pInput.charAt(i));
+                    num += pInput.charAt(i);
+                    continue;
+                }
+
+                if(num.length() > 0){
+                    numStack.push(Integer.parseInt(num));
+                    num = "";
+                    continue;
+                }
+
+                System.out.println(numStack);
+                System.out.print(pInput.charAt(i));
+                evalOp(pInput.charAt(i));
             }
-            else{
-                evalOp(expression.charAt(i));
-            }
+
+            numStack.clear();
+            num = "";
         }
 
+        input.close();
     }
 
     public static void evalOp(char op){
