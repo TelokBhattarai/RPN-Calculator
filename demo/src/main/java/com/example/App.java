@@ -27,10 +27,9 @@ public class App
             System.out.print("> ");
             pInput = input.nextLine();
 
-            for(int i=0; i<pInput.length(); i++){
+            for(int i=0; i<pInput.length(); i++){                
                 if(pInput.charAt(i) >= 48 && pInput.charAt(i) <= 57) 
                 {
-                    //System.out.print(pInput.charAt(i));
                     num += pInput.charAt(i);
                     continue;
                 }
@@ -41,10 +40,10 @@ public class App
                     continue;
                 }
 
-                System.out.println(numStack);
-                System.out.print(pInput.charAt(i));
                 evalOp(pInput.charAt(i));
             }
+
+            System.out.println(numStack);
 
             numStack.clear();
             num = "";
@@ -54,10 +53,13 @@ public class App
     }
 
     public static void evalOp(char op){
+        if(op == ' ') return;
+        
         Integer a = (Integer)numStack.pop();
         Integer b = (Integer)numStack.pop();;
         Integer result = 0;
-        
+
+
         switch(op){
             case '+':
                 result = a+b;
@@ -79,8 +81,6 @@ public class App
                 System.out.println("Invalid Operator");
                 System.exit(0);
         }
-
-        System.out.println(result);
 
     }
 
